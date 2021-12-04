@@ -1,0 +1,32 @@
+name: Send submodule updates to parent repo
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - uses: actions/checkout@v2
+        with: 
+          repository: Benxxy/git-secrets-test
+
+      - name: Pull & update submodules recursively
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
+      - name: Commit
+        run: |
+          git config user.email "benjamin.dedic@hotmail.com"
+          git config user.name "Benxxy"
+          git checkout main
+          git add --all
+          git commit -m "Update submodules" || echo "No changes to commit"
+          git remote set-url origin git@github.com:Benxxy/git-secrets-test.git
+          git push origin main
