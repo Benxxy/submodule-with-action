@@ -15,7 +15,7 @@ jobs:
             ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - uses: actions/checkout@v2
         with: 
-          repository: Benxxy/git-secret-and-submodules
+          repository: Benxxy/git-secrets-and-submodules
 
       - name: Pull & update submodules recursively
         run: |
@@ -28,5 +28,5 @@ jobs:
           git checkout main
           git add --all
           git commit -m "Update submodules" || echo "No changes to commit"
-          git remote set-url origin git@github.com:Benxxy/git-secret-and-submodule.git
+          git remote set-url origin git@github.com:Benxxy/git-secrets-and-submodules.git
           git push origin main
